@@ -22,6 +22,6 @@ func NewBizServerRepo(data *Data, logger log.Logger) biz.BizServerRepo {
 	}
 }
 
-func (b *bizServerRepo) SayHello(context.Context, *bizserverv1.HelloRequest) (*bizserverv1.HelloReply, error) {
-	return nil, nil
+func (b *bizServerRepo) SayHello(ctx context.Context, req *bizserverv1.HelloRequest) (*bizserverv1.HelloReply, error) {
+	return b.data.BizServer.SayHello(ctx, req)
 }

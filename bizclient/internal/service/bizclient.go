@@ -18,9 +18,9 @@ func NewBizClientService(uc *biz.BizClientUsecase) *BizClientService {
 }
 
 func (s *BizClientService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
-	_, err := s.uc.HelloServer(ctx)
+	rsp, err := s.uc.HelloServer(ctx, in.Name)
 	if err != nil {
 		return nil, err
 	}
-	return &v1.HelloReply{Message: "Hello "}, nil
+	return &v1.HelloReply{Message: "Hello " + rsp}, nil
 }

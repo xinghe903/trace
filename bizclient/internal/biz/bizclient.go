@@ -28,6 +28,14 @@ func NewBizClientUsecase(repo BizServerRepo, logger log.Logger) *BizClientUsecas
 	return &BizClientUsecase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *BizClientUsecase) HelloServer(ctx context.Context) (*string, error) {
-	return nil, ErrUserNotFound
+func (uc *BizClientUsecase) HelloServer(ctx context.Context, name string) (string, error) {
+	if name == "failed" {
+		return "", ErrUserNotFound
+	}
+	rsp, err := uc.repo.SayHello(ctx, &bizserverv1.HelloRequest{Name: name})
+	if err != nil {
+		uc.log.Error("say hello error", "error", err)
+		return "", err
+	}
+	return rsp.Message, nil
 }
