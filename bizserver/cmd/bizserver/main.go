@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"pkg/trace"
 
 	"bizserver/internal/conf"
 
@@ -77,6 +78,13 @@ func main() {
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
+	if err := trace.InitTracer(&trace.TraceConfig{
+		Endpoint:   bc.Data.Trace.Endpoint,
+		TraceRatio: bc.Data.Trace.Ratio,
+		Name:       Name,
+	}); err != nil {
+		panic(err)
+	}
 	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
 	if err != nil {
 		panic(err)

@@ -20,3 +20,7 @@ data:
     password: root
     timeout: 5s
   bizserver: bizserver
+  trace: 
+    endpoint: 172.26.239.101:4318
+    ratio: 1.0
+    exporter: jaeger

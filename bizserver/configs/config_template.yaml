@@ -19,3 +19,7 @@ data:
     username: root
     password: root
     timeout: 5s
+  trace: 
+    endpoint: 172.26.239.101:4318
+    ratio: 1.0
+    exporter: jaeger
