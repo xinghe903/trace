@@ -5,7 +5,10 @@ import (
 	"bizclient/internal/conf"
 	"bizclient/internal/service"
 
+	"pkg/metric"
+
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
@@ -17,6 +20,10 @@ func NewGRPCServer(c *conf.Server, bizClientService *service.BizClientService, l
 		grpc.Middleware(
 			recovery.Recovery(),
 			tracing.Server(),
+			metrics.Server(
+				metrics.WithSeconds(metric.MetricSeconds),
+				metrics.WithRequests(metric.MetricRequests),
+			),
 		),
 	}
 	if c.Grpc.Network != "" {

@@ -27,7 +27,7 @@ func newExporter(ctx context.Context, endpoint string) (trace.SpanExporter, erro
 }
 
 // 设置全局trace
-func InitTracer(c *TraceConfig) error {
+func InitJaegerTracer(c *TraceConfig) error {
 	if c == nil {
 		return errors.New("init tracer config is nil")
 	}
