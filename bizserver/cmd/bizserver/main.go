@@ -78,7 +78,7 @@ func main() {
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
-	if err := trace.InitTracer(&trace.TraceConfig{
+	if err := trace.InitJaegerTracer(&trace.TraceConfig{
 		Endpoint:   bc.Data.Trace.Endpoint,
 		TraceRatio: bc.Data.Trace.Ratio,
 		Name:       Name,

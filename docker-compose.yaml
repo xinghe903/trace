@@ -1,0 +1,50 @@
+services:
+  mysql:
+    container_name: geneMysql
+    image: registry.cn-hangzhou.aliyuncs.com/genechen/mysql:8.3.0
+#    image: mysql:8.3.0
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    volumes:
+      - ./volumes/mysql/data:/var/lib/mysql
+      - ./volumes/mysql/config:/etc/mysql/conf.d
+      - ./volumes/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  etcd:
+    hostname: etcd
+    image: registry.cn-hangzhou.aliyuncs.com/genechen/bitnami/etcd:3
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    # ports:
+    #   - "2379:2379"
+    #   - "2380:2380"
+    #   - "4001:4001"
+    #   - "7001:7001"
+    privileged: true
+    volumes:
+      - "./volumes/etcd/data:/bitnami/etcd/data"
+    environment:
+      - "ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"
+      - "ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"
+      - "ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"
+      - "ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"
+      #参数指不用密码可以连接
+      - "ALLOW_NONE_AUTHENTICATION=yes"
+      - "ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"
+      - "ETCD_NAME=node1"
+      - "ETCD_DATA_DIR=/opt/bitnami/etcd/data"
+    ports:
+      - 2379:2379
+      - 2380:2380
+    networks:
+      - etcdnet
+
+networks:
+  etcdnet:
+    name: etcdnet
+#  docker compose up -d
+#  docker compose down
